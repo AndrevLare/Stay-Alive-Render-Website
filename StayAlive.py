@@ -1,29 +1,20 @@
-import requests
-import time
-import random
+import urllib.request
+import json
 
 # URL a la que quieres hacer la solicitud GET
 url = "https://andrevlare.onrender.com"
 
-# Bucle infinito para hacer la solicitud cada 2 a 3 minutos
-while True:
-    try:
-        # Hacer la solicitud GET
-        response = requests.get(url)
-
-        # Comprobar el código de estado de la respuesta (200 significa éxito)
-        if response.status_code == 200:
-            print("Solicitud exitosa! \n")
-        else:
-            print(f"Error en la solicitud. Código de estado: {response.status_code} \n")
-
-    except Exception as e:
-        print(f"Ocurrió un error: {e} \n")
-
-    # Generar un intervalo aleatorio entre 120 y 180 segundos
-    intervalo = random.uniform(120, 180)
-    
-    # Pausar el programa mostrando el tiempo restante
-    for i in range(int(intervalo), 0, -1):
-        print(f"Próxima solicitud en {i} segundos...", end="\r")
-        time.sleep(1)
+try:
+    # Hacer la solicitud GET
+    with urllib.request.urlopen(url) as response:
+        # Leer la respuesta y convertirla a formato JSON
+        data = json.load(response)
+        
+        # Si llegamos aquí, la solicitud fue exitosa
+        print("Solicitud exitosa! \n")
+        # Aquí puedes hacer algo con los datos obtenidos, si lo deseas
+        print(data)  # Esto imprime el contenido de la respuesta en formato JSON
+        
+except Exception as e:
+    # Manejo de errores si la solicitud falla
+    print(f"Ocurrió un error: {e} \n")
